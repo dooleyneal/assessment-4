@@ -1,0 +1,29 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    width: 100px;
+    margin: 5px
+}
+
+#complimentButton {
+    background-color: aqua;
+}
+
+#fortuneButton {
+    background-color:  rgb(224,197,161);
+}
+
+.fortuneEditor {
+    background-color: rgb(195, 195, 252);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+} 
+ #submit {
+    margin: 5px;
+    width: 100px;
+ }
