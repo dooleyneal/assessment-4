@@ -35,6 +35,23 @@ module.exports = {
         globalID++
         fortunes.push(newFortune)
         res.status(200).send(fortunes)
+    },
+
+    deleteFortune: (req, res) => {
+        let index = fortunes.findIndex(e => e.id === +req.params.id)
+        fortunes.splice(index,1)
+        res.status(200).send(fortunes)
+    },
+
+    updateFortune: (req,res) => {
+        const {id} = req.params
+        const {newText} = req.body
+        let index = fortunes.findIndex(e => +e.id === +id)
+        fortunes[index].text = newText
+
+        res.status(200).send(fortunes)
     }
+
+
 
 }
