@@ -38,8 +38,9 @@ module.exports = {
     },
 
     deleteFortune: (req, res) => {
-        let index = fortunes.findIndex(e => e.id === +req.params.id)
-        fortunes.splice(index,1)
+        let index = fortunes.findIndex(e => e.id === req.params)
+        console.log(req.params)
+        fortunes.splice(req.params,1)
         res.status(200).send(fortunes)
     },
 
