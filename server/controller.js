@@ -38,17 +38,20 @@ module.exports = {
     },
 
     deleteFortune: (req, res) => {
-        let index = fortunes.findIndex(e => e.id === req.params)
-        console.log(req.params)
-        fortunes.splice(req.params,1)
+        let index = fortunes.findIndex(e => `:${e.id}` === req.params.id)
+    
+        fortunes.splice(index,1)
+        fortunes.forEach((e, i) => {
+            e.id = i + 1
+        })
+        globalID = fortunes.length + 1
         res.status(200).send(fortunes)
     },
 
     updateFortune: (req,res) => {
-        const {id} = req.params
-        const {newText} = req.body
-        let index = fortunes.findIndex(e => +e.id === +id)
-        fortunes[index].text = newText
+        const {text} = req.body
+        let index = fortunes.findIndex(e => +e.id === +req.params.id)
+        fortunes[index].text = text
 
         res.status(200).send(fortunes)
     }

@@ -1,18 +1,8 @@
-//const { default: axios } = require("axios")
-//const fortunes = require(`./db.json`)
-
-
 const complimentBtn = document.getElementById("complimentButton")
 const fortuneBtn = document.getElementById("fortuneButton")
 
 const addBtn = document.querySelector('#addBtn')
 const addText = document.querySelector('#addText')
-
-
-// const deleteBtn = document.querySelector('.deleteFortune')
-// const editBtn = document.querySelector('.editFortune')
-
-
 
 
 const fortunesContainer = document.querySelector(`#fortunesContainer`)
@@ -42,30 +32,26 @@ const randomFortune = () => {
 const getAllFortunes = () => axios.get(baseURL).then(fortunesCallback).catch(errCallback)
 
 
-const createFortune = body => {
+const createFortune = () => {
     let bodyObj = {
         text: addText.value
     }
     axios.post(baseURL, bodyObj).then(fortunesCallback).catch(errCallback)
+    addText.value = ''
 }
 
+const deleteFortune = id => axios.delete(`${baseURL}:${id}`).then(fortunesCallback).catch(errCallback)
 
-
-const deleteFortune = id => axios.delete(`${baseURL}/:${id}`).then(res => displayFortunes(res.data)).catch(errCallback)
-const updateFortune = (id, text) => axios.put(`${baseURL}/${id}`, {text}).then(fortunesCallback).catch(errCallback)
-
-
-function submitHandler(element) {
-    element.preventDefault()
-
-
+const updateFortune = id => {
+    const editText = document.getElementById(`editText${id}`)
     let bodyObj = {
-        text: addText.value
+        text: editText.value
     }
-    createFortune(bodyObj)
 
-    text.value = ''
+    axios.put(`${baseURL}${id}`, bodyObj).then(fortunesCallback).catch(errCallback)
+    editText.value = ''
 }
+
 
 function createFortuneTag(fortune) {
     const fortuneTag = document.createElement('div')
@@ -77,10 +63,9 @@ function createFortuneTag(fortune) {
         `<p class="fortune">${id}. ${text}</p>
         <div class="buttonsComtainer">
             <button class="deleteFortune" id="Delete${id}" onClick="deleteFortune(${id})">Delete</button>
-            <button class="editFortune">Edit Fortune</button>
+            <input type="text" id="editText${id}" name="newFortune" placeholder="Edit Fortune">
+            <button class="editSubmit" id="editSubmit${id}" onClick="updateFortune(${id})">Update</button>
         </div>`
-        console.log(fortune.id)
-        console.log(fortune.text)
     }
     fortunesContainer.appendChild(fortuneTag)
 }
@@ -94,18 +79,6 @@ const displayFortunes = (array) => {
 }
 
 
-const editText = (id) => {
-    const fortuneTag = document.querySelector(`div#${id}`)
-    const divAppend = document.createElement('form')
-    divAppend.innerHTML = 
-    `<input type="text" id="text" name="newFortune" placeholder="New Fortune">
-    <input type="submit" value="Submit" id="submit"> 
-    `
-    fortuneTag.appendChild(divAppend)
-    updateFortune(id, document.querySelector(`input#text`).value)
-}
-
-
 
 complimentBtn.addEventListener('click', getCompliment)
 fortuneBtn.addEventListener('click', randomFortune)
@@ -114,18 +87,10 @@ fortuneBtn.addEventListener('click', randomFortune)
 
 addBtn.addEventListener('click', (event) =>{
     event.preventDefault()
-    createFortune(form)
+    createFortune()
 })
-// deleteBtn.addEventListener('click', (event) => {
-//     event.preventDefault()
-//     deleteFortune(document.getElementById())
-// })
-// editBtn.addEventListener('click', (event) => {
-//     event.preventDefault()
-//     editText(id)
-// })
+
 
 
 
 getAllFortunes()
-//console.log({data: fortunes})
